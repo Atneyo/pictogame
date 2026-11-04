@@ -1,0 +1,16 @@
+/* Design tokens: every color, font and radius of the app is defined here only */
+:root {
+  --color-bg: #eef3f4;
+  --color-surface: #ffffff;
+  --color-text: #12262d;
+  --color-text-muted: #51666d;
+  --color-accent: #0d6b75;
+  --color-accent-dark: #09494f;
+  --color-danger: #a8321f;
+  --color-border: #c9d6d9;
+
+  --font-body: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  --font-display: Georgia, "Times New Roman", serif;
+
+  --radius: 8px;
+}

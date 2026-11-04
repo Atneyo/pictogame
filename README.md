@@ -25,24 +25,28 @@ This application allows to play at Pictorush boardgame without playmaker for eac
 - Gérer le format des mots (tous en majuscules ? Juste une majuscule au début ?... même quand c'est l'utilisateur qui met)
 - Permettre de modifier un mot ? de le supprimer ?
 - si on met école et ecole ça passe dans la db alors que ça devrait pas mais en même temps y a des mots du genre cote et côte tu peux pas vérifier sans accents qu'ils sont égaux parce que c'est deux mots différents
+- Ajouter un header et un pied de page, des routes claires et logiques et les bons endroits où cliquer pour y accéder (logo dans l'en-tête renvoie sur la page d'accueil)
 - optimiser
   - la requete sql pour récup des mots aléatoirement est pas opti
 - proprifier
   - utiliser sonar ?
   - gérer mieux les exceptions (voir si faut en rajouter, elles ont pas totue un code...)
+  - gérer le css
 
 ## PLAN
 - (ok) créer la structure backend/ configurer le projet
 - (ok) créer une base de données
 - (ok) créer la route qui permet d'obtenir une liste de mots de taille n (n paramètre)
-- gérer les exceptions
+- (ok) gérer les exceptions
 - créer des tests unitaires
-- créer la structure frontend/ configurer le projet
+- (ok) créer la structure frontend/ configurer le projet
 - créer la base frontend (routes et page d'accueil)
 - créer le fichier pour appeler l'API et une méthode pour appeler la route getWords
 - créer la page où les mots sont appelés avec un bouton pour récupérer une liste qui permet de l'afficher, un bouton pour lancer la dictée/ un bouton pause
 - ajouter des tests
 - tout mettre dans un docker
+- s'occuper du header (+ un pied de page ?)
+- s'occuper du css
 - mettre les identifiants et les mots de passe de la db dans un .env (et tout ce qui le nécessite)
 - ajouter de nouvelles fonctionnalités
 
@@ -63,14 +67,14 @@ pictogame/
 │       └── MyApplication.java
 └── frontend/                            # React + Vite
     └── src/
-        ├── App.jsx                      # Interface principale
+        ├── App.tsx                      # Interface principale
         ├── services/
-        │   └── api.js                   # Appels HTTP vers le backend
+        │   └── api.ts                   # Appels HTTP vers le backend
         ├── pages/
         ├── assets/
         │   └── styles/                  # Notamment global.css
         ├── hooks/
-        │   └── useWordReader.js      # Synthèse vocale + intervalle
+        │   └── useWordReader.ts      # Synthèse vocale + intervalle
         └── components/
 ```
 
