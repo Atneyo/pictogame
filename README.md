@@ -27,11 +27,14 @@ This application allows to play at Pictorush boardgame without playmaker for eac
 - si on met école et ecole ça passe dans la db alors que ça devrait pas mais en même temps y a des mots du genre cote et côte tu peux pas vérifier sans accents qu'ils sont égaux parce que c'est deux mots différents
 - optimiser
   - la requete sql pour récup des mots aléatoirement est pas opti
+- proprifier
+  - utiliser sonar ?
+  - gérer mieux les exceptions (voir si faut en rajouter, elles ont pas totue un code...)
 
 ## PLAN
-- créer la structure backend/ configurer le projet
-- créer une base de données
-- créer la route qui permet d'obtenir une liste de mots de taille n (n paramètre)
+- (ok) créer la structure backend/ configurer le projet
+- (ok) créer une base de données
+- (ok) créer la route qui permet d'obtenir une liste de mots de taille n (n paramètre)
 - gérer les exceptions
 - créer des tests unitaires
 - créer la structure frontend/ configurer le projet
