@@ -23,7 +23,6 @@ This application allows to play at Pictorush boardgame without playmaker for eac
 
 ## PLAN
 - créer la structure backend/ configurer le projet
-- créer une API
 - créer une base de données
 - créer la route qui permet d'obtenir une liste de mots de taille n (n paramètre)
 - gérer les exceptions
@@ -38,6 +37,7 @@ This application allows to play at Pictorush boardgame without playmaker for eac
 
 
 ## Structure du code
+```
 pictogame/
 ├── docker-compose.yml
 ├── backend/                             # Spring Boot, Java, Maven
@@ -61,3 +61,8 @@ pictogame/
         ├── hooks/
         │   └── useWordReader.js      # Synthèse vocale + intervalle
         └── components/
+```
+
+## Prerequis/ utilisé par le projet
+
+Maven, Java 25, Spring Boot 4.1.2, 
