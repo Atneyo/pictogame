@@ -1,0 +1,33 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding-block: 4rem;
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(2.4rem, 8vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.description {
+  max-width: 32rem;
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+}
+
+.cta {
+  padding: 0.85rem 2rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: var(--color-surface);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cta:hover {
+  background: var(--color-accent-dark);
+}

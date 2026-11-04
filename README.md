@@ -40,7 +40,7 @@ This application allows to play at Pictorush boardgame without playmaker for eac
 - (ok) gérer les exceptions
 - créer des tests unitaires
 - (ok) créer la structure frontend/ configurer le projet
-- créer la base frontend (routes et page d'accueil)
+- (ok) créer la base frontend (routes et page d'accueil)
 - créer le fichier pour appeler l'API et une méthode pour appeler la route getWords
 - créer la page où les mots sont appelés avec un bouton pour récupérer une liste qui permet de l'afficher, un bouton pour lancer la dictée/ un bouton pause
 - ajouter des tests
@@ -80,4 +80,4 @@ pictogame/
 
 ## Prerequis/ utilisé par le projet
 
-Maven, Java 25, Spring Boot 4.1.2, 
+Maven, Java 25, Spring Boot 4.1.2, npm -v 11.19.0, node -v v24.21.0, (react router, prettier...)
