@@ -25,6 +25,8 @@ This application allows to play at Pictorush boardgame without playmaker for eac
 - Gérer le format des mots (tous en majuscules ? Juste une majuscule au début ?... même quand c'est l'utilisateur qui met)
 - Permettre de modifier un mot ? de le supprimer ?
 - si on met école et ecole ça passe dans la db alors que ça devrait pas mais en même temps y a des mots du genre cote et côte tu peux pas vérifier sans accents qu'ils sont égaux parce que c'est deux mots différents
+- optimiser
+  - la requete sql pour récup des mots aléatoirement est pas opti
 
 ## PLAN
 - créer la structure backend/ configurer le projet
