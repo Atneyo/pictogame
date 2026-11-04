@@ -19,7 +19,12 @@ This application allows to play at Pictorush boardgame without playmaker for eac
 - l'appli doit permettre de compter les points et d'afficher la piste de score
 - backend
     renvoyer une liste de mots en donnant en paramètre le nombre de mots
-
+- permettre à l'utilisateur d'ajouter des mots à la bd
+  - faut prévenir l'utilisateur quand le mot qu'il a rentré existe déjà (normalement la table le prend déjà pas)
+- créer des collections ? des groupes de mots par thème que les joueurs peuvent choisir ? (animal...)
+- Gérer le format des mots (tous en majuscules ? Juste une majuscule au début ?... même quand c'est l'utilisateur qui met)
+- Permettre de modifier un mot ? de le supprimer ?
+- si on met école et ecole ça passe dans la db alors que ça devrait pas mais en même temps y a des mots du genre cote et côte tu peux pas vérifier sans accents qu'ils sont égaux parce que c'est deux mots différents
 
 ## PLAN
 - créer la structure backend/ configurer le projet
