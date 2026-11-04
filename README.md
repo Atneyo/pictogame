@@ -33,6 +33,7 @@ This application allows to play at Pictorush boardgame without playmaker for eac
 - créer la page où les mots sont appelés avec un bouton pour récupérer une liste qui permet de l'afficher, un bouton pour lancer la dictée/ un bouton pause
 - ajouter des tests
 - tout mettre dans un docker
+- mettre les identifiants et les mots de passe de la db dans un .env (et tout ce qui le nécessite)
 - ajouter de nouvelles fonctionnalités
 
 
