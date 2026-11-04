@@ -5,14 +5,14 @@ spring:
     default: dev
 
   datasource:
-    # Surchargeables par variables d'environnement (utile pour Docker et la prod)
+    # Can be overridden by environment variables (useful for Docker and production)
     url: ${DB_URL:jdbc:mysql://localhost:3306/pictogame?allowPublicKeyRetrieval=true&useSSL=false}
     username: ${DB_USER:pictogame}
     password: ${DB_PASSWORD:pictogame}
 
   jpa:
     hibernate:
-      # Flyway crée le schéma ; Hibernate vérifie seulement qu'il correspond aux entités
+      # Flyway creates the schema; Hibernate only checks that it matches the entities
       ddl-auto: validate
     open-in-view: false
 

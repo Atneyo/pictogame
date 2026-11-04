@@ -17,16 +17,16 @@ import java.net.URI;
 import java.time.Instant;
 
 /**
- * Transforme toutes les exceptions en réponses JSON uniformes.
- * Étendre ResponseEntityExceptionHandler gère déjà les erreurs standard de Spring MVC
- * (404, 405, paramètre manquant...) au même format ProblemDetail.
+ * Converts every exception into a uniform JSON error response (RFC 9457 ProblemDetail).
+ * Extending ResponseEntityExceptionHandler already covers the standard Spring MVC errors
+ * (404, 405, missing parameter...) with the same format.
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // Nos exceptions métier (InvalidWordCountException, ...)
+    // Our business exceptions: any subclass of ApiException is handled here
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ProblemDetail> handleApiException(ApiException ex, HttpServletRequest request) {
         if (ex.getStatus().is5xxServerError()) {
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return build(ex.getStatus(), ex.getErrorCode(), ex.getMessage(), request);
     }
 
-    // Ex. ?count=abc
+    // Wrong parameter type, e.g. ?count=abc
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ProblemDetail> handleArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return build(HttpStatus.BAD_REQUEST, ErrorCode.INVALID_PARAMETER, detail, request);
     }
 
-    // MySQL arrêté ou injoignable
+    // Database stopped or unreachable
     @ExceptionHandler({DataAccessResourceFailureException.class, CannotCreateTransactionException.class})
     public ResponseEntity<ProblemDetail> handleDatabaseUnavailable(Exception ex, HttpServletRequest request) {
         log.error("Database unavailable", ex);
@@ -56,7 +56,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 "The database is currently unavailable, please try again later", request);
     }
 
-    // Filet de sécurité : tout ce qui n'est pas prévu
+    // Safety net for anything unexpected. The client gets a generic message,
+    // the details stay in the logs only (never expose internals).
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ProblemDetail> handleUnexpected(Exception ex, HttpServletRequest request) {
         log.error("Unexpected error on {}", request.getRequestURI(), ex);
