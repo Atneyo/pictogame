@@ -30,7 +30,7 @@ This application allows to play at Pictorush boardgame without playmaker for eac
   - la requete sql pour récup des mots aléatoirement est pas opti
 - proprifier
   - utiliser sonar ?
-  - gérer mieux les exceptions (voir si faut en rajouter, elles ont pas totue un code...)
+  - gérer mieux les exceptions (voir si faut en rajouter, elles ont pas totue un code...), faudrait parfois donner des messages plus précis à l'utilisateur (par ex préciser les bornes autorisées, dire que c'est pas le bon type donné...)
   - gérer le css
 
 ## PLAN
@@ -43,6 +43,7 @@ This application allows to play at Pictorush boardgame without playmaker for eac
 - (ok) créer la base frontend (routes et page d'accueil)
 - créer le fichier pour appeler l'API et une méthode pour appeler la route getWords
 - créer la page où les mots sont appelés avec un bouton pour récupérer une liste qui permet de l'afficher, un bouton pour lancer la dictée/ un bouton pause
+- gérer les exceptions renvoyées par 
 - ajouter des tests
 - tout mettre dans un docker
 - s'occuper du header (+ un pied de page ?)
