@@ -1,96 +1,83 @@
 # Pictogame
 
-## Project presentation
+Pictogame is a companion app for the Pictorush board game. It removes the need for a player to act as playmaker during a round. The current version retrieves a random list of words and reads them aloud as a paced dictation, while showing the active word on screen.
 
-This application allows to play at Pictorush boardgame without playmaker for each round.
+## Table of contents
 
-## TODO
+- [Stack](#stack)
+- [Run the app locally](#run-the-app-locally)
+- [Code structure](#code-structure)
+- [TODO](#todo)
 
-- trouver comment faire prononcer les mots
-- créer des listes de mots
-    - créer une base de donnée
-    - avoir une banque de mots
-    - la personne peut choisir le nombre de mots pour chaque partie
-    - sort une liste aléatoire
-    - doit éviter sortir les même mots deux fois lors d'une partie
-- l'appli doit permettre de lire les mots au top départ
-- l'appli doit permettre de demander les cases à deviner et d'affihcer la réponse quand c'est voulu
-    - il faut que la personne dont c'est le tour puisse rentrer le mot et si c'est pas validé c'est course pour les autres pour tenter et si c'est pas validé ça affiche la réponse
-    - on pourrait afficher les cases avec juste le chiffre et quand la case est cliquée elle est révélée ou avant d'être révélée faut rentrer sa réponse
-- l'appli doit permettre de compter les points et d'afficher la piste de score
-- backend
-    renvoyer une liste de mots en donnant en paramètre le nombre de mots
-- permettre à l'utilisateur d'ajouter des mots à la bd
-  - faut prévenir l'utilisateur quand le mot qu'il a rentré existe déjà (normalement la table le prend déjà pas)
-- créer des collections ? des groupes de mots par thème que les joueurs peuvent choisir ? (animal...)
-- Gérer le format des mots (tous en majuscules ? Juste une majuscule au début ?... même quand c'est l'utilisateur qui met)
-- Permettre de modifier un mot ? de le supprimer ?
-- si on met école et ecole ça passe dans la db alors que ça devrait pas mais en même temps y a des mots du genre cote et côte tu peux pas vérifier sans accents qu'ils sont égaux parce que c'est deux mots différents
-- Ajouter un header et un pied de page, des routes claires et logiques et les bons endroits où cliquer pour y accéder (logo dans l'en-tête renvoie sur la page d'accueil)
-- ajouter des paramètres (choix du nombre de mots, du nombre de manches, du thème/ de tous les thèmes de la partie (pour chaque manche)...)
-- possibilité de faire une partie full sur ordi avec les points et tout ou juste la dictée et voir les mots pour compter les points sur le jeu en dur
-- optimiser
-  - la requete sql pour récup des mots aléatoirement est pas opti
-- proprifier
-  - utiliser sonar ?
-  - gérer mieux les exceptions (voir si faut en rajouter, elles ont pas totue un code...), faudrait parfois donner des messages plus précis à l'utilisateur (par ex préciser les bornes autorisées, dire que c'est pas le bon type donné...)
-  - gérer le css
+## Stack
 
-## PLAN
-- (ok) créer la structure backend/ configurer le projet
-- (ok) créer une base de données
-- (ok) créer la route qui permet d'obtenir une liste de mots de taille n (n paramètre)
-- (ok) gérer les exceptions
-- créer des tests unitaires
-- (ok) créer la structure frontend/ configurer le projet
-- (ok) créer la base frontend (routes et page d'accueil)
-- (ok) créer le fichier pour appeler l'API et une méthode pour appeler la route getWords
-- (ok) créer la page où les mots sont appelés avec un bouton pour récupérer une liste qui permet de l'afficher, un bouton pour lancer la dictée/ un bouton pause
-- (ok) gérer les exceptions renvoyées par l'api
-- ajouter des tests
-- tout mettre dans un docker
-- s'occuper du header (+ un pied de page ?)
-- s'occuper du css
-- mettre les identifiants et les mots de passe de la db dans un .env (et tout ce qui le nécessite)
-- ajouter de nouvelles fonctionnalités
+- Frontend: React 19, TypeScript, React Router, and Vite
+- Backend: Java 25, Spring Boot 4.1.2, Spring Data JPA, and Flyway
+- Database: MySQL 8.4
 
+## Run the app locally
 
-## Structure du code
-```
+Prerequisites: Docker with Compose, Java 25, Maven, Node.js 24, and npm.
+
+1. From the project root, start the database:
+
+   ```sh
+   docker compose up -d db
+   ```
+
+2. In a terminal, start the backend:
+
+   ```sh
+   cd backend
+   mvn spring-boot:run
+   ```
+
+3. In another terminal, install frontend dependencies and start Vite:
+
+   ```sh
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+4. Open <http://localhost:5173>. Vite forwards `/api` requests to the backend at `http://localhost:8080`. On startup, Flyway creates the word table and inserts the initial word list.
+
+Stop the database from the project root with `docker compose down`. The database volume is retained, so its data remains for the next run.
+
+## Code structure
+
+```text
 pictogame/
 ├── docker-compose.yml
-├── backend/                             # Spring Boot, Java, Maven
-│   └── src/main/java/pictogame/
-│       ├── models/
-│       ├── repository/                  # Accès à la base de données
-│       ├── endpoint/
-│       ├── common/
-│       ├── config/
-│       ├── service/
-│       ├── exception/
-│       └── MyApplication.java
-└── frontend/                            # React + Vite
+├── backend/
+│   ├── src/main/java/chloe/pictogame/
+|   |   ├── dto/           # API response types
+│   |   ├── models/        # JPA entities
+│   |   ├── repository/    # Database queries
+│   |   ├── endpoint/      # REST API routes
+│   |   ├── common/
+│   |   ├── config/
+│   |   ├── service/       # Business logic
+│   |   ├── exception/     # API error handling
+│   |   └── MyApplication.java
+|   └── src/main/resources/
+|        └── db/migration/ # Flyway schemas
+└── frontend/
     └── src/
-        ├── App.tsx                      # Interface principale
+        ├── App.tsx        # Application routes
         ├── services/
-        │   └── api.ts                   # Appels HTTP vers le backend
+        │   └── api.ts     # HTTP requests to the backend
         ├── pages/
-        ├── assets/
-        │   └── styles/                  # Notamment global.css
+        ├── assets/       
+        │   └── styles/    # Global styles
         ├── hooks/
-        │   └── useWordReader.ts      # Synthèse vocale + intervalle
         └── components/
 ```
 
-## Prerequis/ utilisé par le projet
+The backend exposes `GET /api/words?count=N` (default 20; valid range 1-50). The frontend uses the browser's French speech synthesis and requires browser support for that feature.
 
-Maven, Java 25, Spring Boot 4.1.2, npm -v 11.19.0, node -v v24.21.0, (react router, prettier...)
+## TODO
 
-## Notes
-```
-docker compose up -d                    # start everything
-docker compose down                     # stop and remove containers (data is kept)
-docker compose down -v                  # same, and DELETE the database volume
-docker compose up --build -d backend    # rebuild and restart only the backend
-docker compose logs -f frontend         # follow one service's logs
-```
+- Add automated tests for the backend and frontend.
+- Dockerize the backend and frontend as well as the database.
+- Add game features such as themes, word management, and score tracking.
