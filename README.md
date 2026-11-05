@@ -6,6 +6,7 @@ Pictogame is a companion app for the Pictorush board game. It removes the need f
 
 - [Stack](#stack)
 - [Run the app locally](#run-the-app-locally)
+- [Current result](#current-result)
 - [Code structure](#code-structure)
 - [TODO](#todo)
 
@@ -43,6 +44,20 @@ Prerequisites: Docker with Compose, Java 25, Maven, Node.js 24, and npm.
 4. Open <http://localhost:5173>. Vite forwards `/api` requests to the backend at `http://localhost:8080`. On startup, Flyway creates the word table and inserts the initial word list.
 
 Stop the database from the project root with `docker compose down`. The database volume is retained, so its data remains for the next run.
+
+## Current result
+
+### Home page
+
+![Home page](screens/homePage.png)
+
+### Word list
+
+![Word list](screens/dictationPage_getWords.png)
+
+### Dictation
+
+![Dictation in progress](screens/dictationPage_reading.png)
 
 ## Code structure
 
