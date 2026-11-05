@@ -1,0 +1,36 @@
+.button {
+  padding: 0.85rem 2rem;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.primary {
+  background: var(--color-accent);
+  color: var(--color-surface);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--color-accent-dark);
+}
+
+.secondary {
+  background: transparent;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.secondary:hover:not(:disabled) {
+  background: var(--color-accent);
+  color: var(--color-surface);
+}
+
+/* Declared last so it wins over the variants */
+.button:disabled {
+  background: var(--color-border);
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
