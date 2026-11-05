@@ -26,6 +26,7 @@ This application allows to play at Pictorush boardgame without playmaker for eac
 - Permettre de modifier un mot ? de le supprimer ?
 - si on met école et ecole ça passe dans la db alors que ça devrait pas mais en même temps y a des mots du genre cote et côte tu peux pas vérifier sans accents qu'ils sont égaux parce que c'est deux mots différents
 - Ajouter un header et un pied de page, des routes claires et logiques et les bons endroits où cliquer pour y accéder (logo dans l'en-tête renvoie sur la page d'accueil)
+- ajouter des paramètres (choix du nombre de mots, du nombre de manches, du thème/ de tous les thèmes de la partie (pour chaque manche)...)
 - optimiser
   - la requete sql pour récup des mots aléatoirement est pas opti
 - proprifier
@@ -41,7 +42,7 @@ This application allows to play at Pictorush boardgame without playmaker for eac
 - créer des tests unitaires
 - (ok) créer la structure frontend/ configurer le projet
 - (ok) créer la base frontend (routes et page d'accueil)
-- créer le fichier pour appeler l'API et une méthode pour appeler la route getWords
+- (ok) créer le fichier pour appeler l'API et une méthode pour appeler la route getWords
 - créer la page où les mots sont appelés avec un bouton pour récupérer une liste qui permet de l'afficher, un bouton pour lancer la dictée/ un bouton pause
 - gérer les exceptions renvoyées par 
 - ajouter des tests
