@@ -92,17 +92,18 @@ pictogame/
 ├── docker-compose.yml
 ├── backend/
 │   ├── src/main/java/chloe/pictogame/
-|   |   ├── dto/           # API response types
-│   |   ├── models/        # JPA entities
-│   |   ├── repository/    # Database queries
-│   |   ├── endpoint/      # REST API routes
-│   |   ├── common/
-│   |   ├── config/
-│   |   ├── service/       # Business logic
-│   |   ├── exception/     # API error handling
-│   |   └── MyApplication.java
-|   └── src/main/resources/
-|        └── db/migration/ # Flyway schemas
+│   │   ├── dto/           # API response types
+│   │   ├── models/        # JPA entities
+│   │   ├── repository/    # Database queries
+│   │   ├── endpoint/      # REST API routes
+│   │   ├── common/
+│   │   ├── config/
+│   │   ├── service/       # Business logic
+│   │   ├── exception/     # API error handling
+│   │   └── MyApplication.java
+│   ├── src/main/resources/
+│   │   └── db/migration/ # Flyway schemas
+│   └── src/test/java/chloe/pictogame
 └── frontend/
     └── src/
         ├── App.tsx        # Application routes
@@ -119,5 +120,5 @@ The backend exposes `GET /api/words?count=N` (default 20; valid range 1-50). The
 
 ## TODO
 
-- Add automated tests for the backend and frontend.
+- Add automated tests for the frontend.
 - Add game features such as themes, word management, and score tracking.
