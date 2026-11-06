@@ -4,20 +4,47 @@ services:
     container_name: pictogame-db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: pictogame
-      MYSQL_USER: pictogame
-      MYSQL_PASSWORD: pictogame
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD is required in .env}
+      MYSQL_DATABASE: ${DB_NAME:?DB_NAME is required in .env}
+      MYSQL_USER: ${DB_USER:?DB_USER is required in .env}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required in .env}
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
-      - "3306:3306"
+      # Bound to localhost only: handy to run the backend from the IDE, not reachable from the network
+      - "127.0.0.1:${DB_PORT:-3306}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      # $$ is escaped for Compose: the shell inside the container reads the variable
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
       interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 20
+
+  backend:
+    build: ./backend
+    container_name: pictogame-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy # wait until MySQL accepts connections
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      # "db" is the service name: Docker resolves it to the MySQL container
+      DB_HOST: db
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    # No published port: only the frontend container talks to the backend
+
+  frontend:
+    build: ./frontend
+    container_name: pictogame-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${APP_PORT:-3000}:80"
 
 volumes:
   mysql_data:

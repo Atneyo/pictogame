@@ -1,0 +1,8 @@
+# Production profile (used in Docker): quieter logs than dev
+spring:
+  jpa:
+    show-sql: false
+
+logging:
+  level:
+    com.pictogame: INFO

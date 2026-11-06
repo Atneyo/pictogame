@@ -4,11 +4,19 @@ spring:
   profiles:
     default: dev
 
+  config:
+    # Looks for the shared .env in the working directory AND one level above it,
+    # so it works whether the app is started from the project root or from backend/.
+    # Both are optional: in Docker there is no .env file, variables come from the container.
+    import:
+      - "optional:file:./.env[.properties]"
+      - "optional:file:../.env[.properties]"
+
   datasource:
     # Can be overridden by environment variables (useful for Docker and production)
-    url: ${DB_URL:jdbc:mysql://localhost:3306/pictogame?allowPublicKeyRetrieval=true&useSSL=false}
-    username: ${DB_USER:pictogame}
-    password: ${DB_PASSWORD:pictogame}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME}?allowPublicKeyRetrieval=true&useSSL=false
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:

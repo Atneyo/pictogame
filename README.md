@@ -13,10 +13,14 @@ Pictogame is a companion app for the Pictorush board game. It removes the need f
 ## Stack
 
 - Frontend: React 19, TypeScript, React Router, and Vite
-- Backend: Java 25, Spring Boot 4.1.2, Spring Data JPA, and Flyway
+- Backend: Maven, Java 25, Spring Boot 4.1.2, Spring Data JPA, and Flyway
 - Database: MySQL 8.4
 
 ## Run the app locally
+
+For both options, copy `.env.example` to `.env` and set your database passwords.
+
+### Development mode
 
 Prerequisites: Docker with Compose, Java 25, Maven, Node.js 24, and npm.
 
@@ -41,9 +45,31 @@ Prerequisites: Docker with Compose, Java 25, Maven, Node.js 24, and npm.
    npm run dev
    ```
 
-4. Open <http://localhost:5173>. Vite forwards `/api` requests to the backend at `http://localhost:8080`. On startup, Flyway creates the word table and inserts the initial word list.
+4. Open <http://localhost:5173>. Vite forwards `/api` requests to the backend at `http://localhost:8080`.
 
-Stop the database from the project root with `docker compose down`. The database volume is retained, so its data remains for the next run.
+Stop the database from the project root with `docker compose down`. Its data volume is retained.
+
+### Docker
+
+With Docker Compose installed and `.env` configured, start the frontend, backend, and database from the project root:
+
+```sh
+docker compose up -d
+```
+
+Open <http://localhost:3000> (or the port configured by `APP_PORT` in `.env`). On startup, Flyway creates the word table and inserts the initial word list.
+
+Stop the application and database with:
+
+```sh
+docker compose down
+```
+
+This keeps the database volume and its data. To also delete the volume and all database data, run:
+
+```sh
+docker compose down -v
+```
 
 ## Current result
 
@@ -94,5 +120,4 @@ The backend exposes `GET /api/words?count=N` (default 20; valid range 1-50). The
 ## TODO
 
 - Add automated tests for the backend and frontend.
-- Dockerize the backend and frontend as well as the database.
 - Add game features such as themes, word management, and score tracking.
