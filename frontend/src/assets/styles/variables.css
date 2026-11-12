@@ -1,13 +1,27 @@
 /* Design tokens: every color, font and radius of the app is defined here only */
 :root {
-  --color-bg: #eef3f4;
-  --color-surface: #ffffff;
+  /* Surfaces */
+  --color-bg: #e2ebed; /* page background */
+  --color-surface: #ffffff; /* light touches only: word chips */
+  --color-surface-soft: rgb(255 255 255 / 0.5); /* panels sitting on the page */
+  --color-header-bg: #0b3f46;
+
+  /* Text */
+  --color-header-text: #f1f7f8;
   --color-text: #12262d;
-  --color-text-muted: #51666d;
+  --color-text-muted: #475b62;
+  --color-on-accent: #ffffff;
+
+  /* Accent (main actions) */
   --color-accent: #0d6b75;
   --color-accent-dark: #09494f;
+
+  /* Soft accent (secondary buttons) */
+  --color-accent-soft: #cfe3e6;
+  --color-accent-soft-hover: #b9d4d8;
+
   --color-danger: #a8321f;
-  --color-border: #c9d6d9;
+  --color-border: #b3c5ca;
 
   --font-body: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
   --font-display: Georgia, "Times New Roman", serif;

@@ -1,13 +1,25 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Button from "../components/Button.tsx";
 import { useRandomWords } from "../hooks/useRandomWords";
 import { useWordReader } from "../hooks/useWordReader.ts";
 import styles from "./DictationPage.module.css";
 
+export const DEFAULT_WORD_COUNT = 20;
+
 export default function DictationPage() {
   const { words, isLoading, error, loadWords } = useRandomWords();
   const labels = useMemo(() => words.map((word) => word.label), [words]);
   const { status, currentWord, isSupported, start, pause, resume, stop } = useWordReader(labels);
+
+  const [count, setCount] = useState(DEFAULT_WORD_COUNT);
+
+  function setCountHandleNaN(c: number) {
+    if (Number.isNaN(c)) {
+      setCount(0);
+    } else {
+      setCount(c);
+    }
+  }
 
   // Dictation screen: only the word being spoken, centered
   if (status !== "idle") {
@@ -47,6 +59,33 @@ export default function DictationPage() {
         l'écran pendant qu'il est prononcé.
       </p>
 
+      <div className={styles.parameters}>
+        <h2>Paramètres</h2>
+        <div className={styles.parameter}>
+          <label htmlFor="countId" className={styles.parameterLabel}>
+            Nombre de mots
+          </label>
+          <Button
+            size="small"
+            aria-label="Retirer 5 mots"
+            onClick={() => setCount(Math.max(0, count - 5))}
+          >
+            −5
+          </Button>
+          <input
+            id="countId"
+            className={styles.parameterInput}
+            type="number"
+            value={count}
+            min={0}
+            onChange={(e) => setCountHandleNaN(Number.parseInt(e.target.value))}
+          />
+          <Button size="small" aria-label="Ajouter 5 mots" onClick={() => setCount(count + 5)}>
+            +5
+          </Button>
+        </div>
+      </div>
+
       {!isSupported && (
         <p className={styles.error} role="alert">
           Votre navigateur ne gère pas la synthèse vocale.
@@ -61,7 +100,7 @@ export default function DictationPage() {
       <div className={styles.actions}>
         <Button
           variant={hasWords ? "secondary" : "primary"}
-          onClick={loadWords}
+          onClick={() => loadWords(count)}
           disabled={isLoading}
         >
           {loadLabel}

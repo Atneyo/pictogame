@@ -9,7 +9,7 @@ export function useRandomWords() {
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  async function loadWords() {
+  async function loadWords(count?: number) {
     // Cancel any request still in flight: only the latest one counts
     abortRef.current?.abort();
     const controller = new AbortController();
@@ -18,7 +18,7 @@ export function useRandomWords() {
     setIsLoading(true);
     setError(null);
     try {
-      setWords(await getWords(undefined, controller.signal));
+      setWords(await getWords(count, controller.signal));
     } catch (e) {
       // A cancelled request is expected, not an error to display
       if (e instanceof DOMException && e.name === "AbortError") return;

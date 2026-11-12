@@ -23,7 +23,7 @@
   padding: 0.85rem 2rem;
   border-radius: 999px;
   background: var(--color-accent);
-  color: var(--color-surface);
+  color: var(--color-on-accent);
   font-weight: 600;
   text-decoration: none;
 }

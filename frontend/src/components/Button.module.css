@@ -1,5 +1,4 @@
 .button {
-  padding: 0.85rem 2rem;
   border: 2px solid transparent;
   border-radius: 999px;
   font-weight: 600;
@@ -9,7 +8,7 @@
 
 .primary {
   background: var(--color-accent);
-  color: var(--color-surface);
+  color: var(--color-on-accent);
 }
 
 .primary:hover:not(:disabled) {
@@ -17,14 +16,22 @@
 }
 
 .secondary {
-  background: transparent;
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  /* border-color: var(--color-border); */
+  color: var(--color-accent-dark);
 }
 
 .secondary:hover:not(:disabled) {
-  background: var(--color-accent);
-  color: var(--color-surface);
+  background: var(--color-accent-soft-hover);
+  /* color: var(--color-on-accent); */
+}
+
+.small {
+  padding: 0.4rem 1rem;
+}
+
+.medium {
+  padding: 0.85rem 2rem;
 }
 
 /* Declared last so it wins over the variants */
