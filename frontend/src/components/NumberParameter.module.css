@@ -6,7 +6,9 @@
 }
 
 .parameterLabel {
+  width: 10rem;
   color: var(--color-text);
+  margin-right: 0.75rem;
 }
 
 .parameterInput {
@@ -17,4 +19,8 @@
   appearance: textfield;
   font-size: 1.25rem;
   padding: 0.5rem 0.75rem;
+}
+
+.parameterButton {
+  width: 4rem;
 }

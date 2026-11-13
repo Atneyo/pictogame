@@ -33,6 +33,7 @@ export default function NumberParameter({
       <Button
         size="small"
         aria-label={`Retirer ${step} mots`}
+        className={styles.parameterButton}
         onClick={() =>
           updateValue(
             (min !== undefined
@@ -57,6 +58,7 @@ export default function NumberParameter({
       <Button
         size="small"
         aria-label={`Ajouter ${step} mots`}
+        className={styles.parameterButton}
         onClick={() =>
           updateValue(
             (max !== undefined
