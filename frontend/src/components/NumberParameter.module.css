@@ -6,9 +6,10 @@
 }
 
 .parameterLabel {
-  width: 10rem;
+  width: 15rem;
   color: var(--color-text);
   margin-right: 0.75rem;
+  overflow-wrap: break-word;
 }
 
 .parameterInput {
