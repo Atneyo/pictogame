@@ -74,7 +74,7 @@ export default function DictationPage() {
           max={WORD_MAX}
         />
         <NumberParameter
-          label="Délai lors de la dictée"
+          label="Délai lors de la dictée (s)"
           value={delaySString}
           updateValue={setDelaySString}
           step={1}
