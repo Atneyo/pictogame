@@ -3,23 +3,20 @@ import Button from "../components/Button.tsx";
 import { useRandomWords } from "../hooks/useRandomWords";
 import { useWordReader } from "../hooks/useWordReader.ts";
 import styles from "./DictationPage.module.css";
+import NumberParameter from "../components/NumberParameter.tsx";
 
-export const DEFAULT_WORD_COUNT = 20;
+// see backend/src/main/java/chloe/pictogame/common/WordConstants.java
+export const DEFAULT_WORD_COUNT = "20";
+export const WORD_MIN = 1;
+export const WORD_MAX = 50;
 
 export default function DictationPage() {
   const { words, isLoading, error, loadWords } = useRandomWords();
   const labels = useMemo(() => words.map((word) => word.label), [words]);
   const { status, currentWord, isSupported, start, pause, resume, stop } = useWordReader(labels);
 
-  const [count, setCount] = useState(DEFAULT_WORD_COUNT);
-
-  function setCountHandleNaN(c: number) {
-    if (Number.isNaN(c)) {
-      setCount(0);
-    } else {
-      setCount(c);
-    }
-  }
+  const [countString, setCountString] = useState(DEFAULT_WORD_COUNT);
+  const count = Number(countString);
 
   // Dictation screen: only the word being spoken, centered
   if (status !== "idle") {
@@ -61,29 +58,14 @@ export default function DictationPage() {
 
       <div className={styles.parameters}>
         <h2>Paramètres</h2>
-        <div className={styles.parameter}>
-          <label htmlFor="countId" className={styles.parameterLabel}>
-            Nombre de mots
-          </label>
-          <Button
-            size="small"
-            aria-label="Retirer 5 mots"
-            onClick={() => setCount(Math.max(0, count - 5))}
-          >
-            −5
-          </Button>
-          <input
-            id="countId"
-            className={styles.parameterInput}
-            type="number"
-            value={count}
-            min={0}
-            onChange={(e) => setCountHandleNaN(Number.parseInt(e.target.value))}
-          />
-          <Button size="small" aria-label="Ajouter 5 mots" onClick={() => setCount(count + 5)}>
-            +5
-          </Button>
-        </div>
+        <NumberParameter
+          label="Nombre de mots"
+          value={countString}
+          updateValue={setCountString}
+          step={10}
+          min={1}
+          max={50}
+        />
       </div>
 
       {!isSupported && (

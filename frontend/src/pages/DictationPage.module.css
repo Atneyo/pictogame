@@ -28,27 +28,6 @@
   border-radius: var(--radius);
 }
 
-.parameter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  align-items: center;
-}
-
-.parameterLabel {
-  color: var(--color-text);
-}
-
-.parameterInput {
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius);
-  text-align: center;
-  width: 5.5rem;
-  appearance: textfield;
-  font-size: 1.25rem;
-  padding: 0.5rem 0.75rem;
-}
-
 .error {
   color: var(--color-danger);
 }
