@@ -10,7 +10,7 @@ export const DEFAULT_WORD_COUNT = "20";
 export const WORD_MIN = 1;
 export const WORD_MAX = 50;
 
-export const DEFAULT_DELAY_S = "3";
+export const DEFAULT_DELAY_S = "1";
 
 export default function DictationPage() {
   const [countString, setCountString] = useState(DEFAULT_WORD_COUNT);
@@ -109,7 +109,7 @@ export default function DictationPage() {
       </div>
 
       {hasWords && (
-        <div>
+        <div className={styles.wordList}>
           <h2 className={styles.listTitle}>Votre liste ({words.length} mots)</h2>
           <ul className={styles.words}>
             {words.map((word) => (

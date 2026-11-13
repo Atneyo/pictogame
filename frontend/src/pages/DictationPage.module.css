@@ -2,12 +2,12 @@
 .page {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.25rem;
 }
 
 .intro {
-  max-width: 36rem;
+  max-width: 80%;
   color: var(--color-text-muted);
 }
 
@@ -30,6 +30,13 @@
 
 .error {
   color: var(--color-danger);
+}
+
+.wordList {
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .listTitle {

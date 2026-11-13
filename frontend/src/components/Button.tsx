@@ -9,7 +9,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
 }
 
-export default function Button({ variant = "primary", size = "medium", className, ...props }: ButtonProps) {
+export default function Button({
+  variant = "primary",
+  size = "medium",
+  className,
+  ...props
+}: ButtonProps) {
   // type="button" avoids accidental form submissions; callers can still override it
   return (
     <button
