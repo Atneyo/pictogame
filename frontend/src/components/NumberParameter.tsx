@@ -1,3 +1,4 @@
+import { useId } from "react";
 import Button from "./Button.tsx";
 import styles from "./NumberParameter.module.css";
 
@@ -18,6 +19,7 @@ export default function NumberParameter({
   min,
   max,
 }: NumberParameterProps) {
+
   function check(s: string) {
     let n = Number(s);
     if (min !== undefined) n = Math.max(min, n);
@@ -25,9 +27,11 @@ export default function NumberParameter({
     updateValue(n.toString());
   }
 
+  const countId = useId();
+
   return (
     <div className={styles.parameter}>
-      <label htmlFor="countId" className={styles.parameterLabel}>
+      <label htmlFor={countId} className={styles.parameterLabel}>
         {label}
       </label>
       <Button
@@ -46,7 +50,7 @@ export default function NumberParameter({
         −{step}
       </Button>
       <input
-        id="countId"
+        id={countId}
         className={styles.parameterInput}
         type="number"
         value={value}
