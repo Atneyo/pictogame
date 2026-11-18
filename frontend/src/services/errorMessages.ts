@@ -4,8 +4,10 @@ import { ApiError } from "./ApiError.ts";
 // Record<ApiErrorCode, ...> forces a message for every code: adding a code without one fails to compile
 const MESSAGES: Record<ApiErrorCode, string> = {
   INVALID_WORD_COUNT: "Le nombre de mots demandé n'est pas valide.",
+  INVALID_LABEL: "Le mot donné n'est pas valide.",
+  INVALID_LABEL_DUPLICATE: "Le mot donné est déjà enregistré.",
+  INVALID_LABEL_NULL: "Un mot doit être saisi.",
   INVALID_PARAMETER: "Un paramètre de la requête n'est pas valide.",
-  WORD_NOT_FOUND: "Ce mot n'existe pas.",
   DUPLICATE_WORD: "Ce mot existe déjà.",
   DATABASE_UNAVAILABLE:
     "La base de données est momentanément indisponible. Réessayez dans un instant.",

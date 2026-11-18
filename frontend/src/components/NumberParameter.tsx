@@ -19,7 +19,6 @@ export default function NumberParameter({
   min,
   max,
 }: NumberParameterProps) {
-
   function check(s: string) {
     let n = Number(s);
     if (min !== undefined) n = Math.max(min, n);

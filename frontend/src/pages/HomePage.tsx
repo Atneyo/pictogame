@@ -9,9 +9,14 @@ export default function HomePage() {
         Récupérez une liste de mots tirés au hasard, lancez la dictée et laissez l'ordinateur les
         prononcer à voix haute, un par un, à intervalle régulier.
       </p>
-      <Link to="/dictation" className={styles.cta}>
-        Commencer une dictée
-      </Link>
+      <div className={styles.choices}>
+        <Link to="/dictation" className={styles.cta}>
+          Commencer une dictée
+        </Link>
+        <Link to="/add" className={styles.cta}>
+          Ajouter des mots
+        </Link>
+      </div>
     </section>
   );
 }

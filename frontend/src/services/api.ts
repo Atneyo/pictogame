@@ -37,3 +37,9 @@ export function getWords(count?: number, signal?: AbortSignal): Promise<Word[]> 
   const query = params.size > 0 ? `?${params}` : "";
   return request<Word[]>(`/words${query}`, { signal });
 }
+
+export function addWord(label: string): Promise<Word> {
+  const params = new URLSearchParams();
+  params.set("label", label);
+  return request<Word>(`/words?${params}`, { method: "POST" });
+}

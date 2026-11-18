@@ -1,0 +1,57 @@
+.page {
+  display: flex;
+  justify-content: space-evenly;
+  /* align-items: center; */
+  gap: 1.25rem;
+}
+
+.leftPart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-grow: 2;
+  gap: 1.25rem;
+}
+
+.rightPart {
+  max-width: 30%;
+  flex-grow: 1;
+  flex-wrap: wrap;
+}
+
+.intro {
+  max-width: 80%;
+  color: var(--color-text-muted);
+}
+
+.error {
+  color: var(--color-danger);
+}
+
+.addWordBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  background: var(--color-surface-soft);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  width: 80%;
+  gap: 0.75rem;
+  padding: 0.85rem 2rem;
+}
+
+.wordLabel {
+  color: var(--color-text);
+  margin-right: 0.75rem;
+}
+
+.wordInput {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  text-align: center;
+  appearance: textfield;
+  font-size: 1.25rem;
+  padding: 0.5rem 0.75rem;
+}

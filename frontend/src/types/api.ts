@@ -1,8 +1,10 @@
-// Error codes sent by the backend (see ErrorCode.java), plus two client-side codes
+// Error codes sent by the backend (see ErrorCode.java), plus client-side codes
 export type ApiErrorCode =
   | "INVALID_WORD_COUNT"
+  | "INVALID_LABEL"
+  | "INVALID_LABEL_NULL"
+  | "INVALID_LABEL_DUPLICATE"
   | "INVALID_PARAMETER"
-  | "WORD_NOT_FOUND"
   | "DUPLICATE_WORD"
   | "DATABASE_UNAVAILABLE"
   | "INTERNAL_ERROR"
