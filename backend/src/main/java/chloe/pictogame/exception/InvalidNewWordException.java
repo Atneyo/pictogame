@@ -6,7 +6,7 @@ public class InvalidNewWordException extends ApiException {
     public InvalidNewWordException(String label) {
         super(HttpStatus.BAD_REQUEST,
                 ErrorCode.INVALID_LABEL,
-                "label must not be null (received: %s)".formatted(label));
+                "invalid label (received: %s)".formatted(label));
     }
     public InvalidNewWordException(String label, ErrorCode code){
         super(HttpStatus.BAD_REQUEST,

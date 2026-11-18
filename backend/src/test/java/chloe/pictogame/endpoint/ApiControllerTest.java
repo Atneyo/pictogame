@@ -5,14 +5,15 @@ import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
 
+import chloe.pictogame.exception.ErrorCode;
+import chloe.pictogame.exception.InvalidNewWordException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -115,7 +116,7 @@ class  ApiControllerTest {
         // Prepare
 
         // Execute
-        mockMvc.perform(post("/api/words"))
+        mockMvc.perform(put("/api/words"))
                 .andExpect(status().isMethodNotAllowed());
 
         // Control
@@ -145,6 +146,53 @@ class  ApiControllerTest {
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.code").value("INTERNAL_ERROR"))
                 .andExpect(jsonPath("$.detail").value(not(containsString("internal secret detail"))));
+
+        // Control
+    }
+
+    @Test
+    void post_add_word_returns_word_created() throws Exception {
+        // Prepare
+        when(wordService.addWord("test")).thenReturn(new WordResponse(1L, "test"));
+
+        // Execute
+        mockMvc.perform(post("/api/words").param("label", "test"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("id").value(1))
+                .andExpect(jsonPath("label").value("test"));
+    }
+
+    @Test
+    void post_add_word_throw_exception_when_already_existing() throws Exception {
+        // Prepare
+        when(wordService.addWord("test")).thenThrow(new InvalidNewWordException("test", ErrorCode.INVALID_LABEL_DUPLICATE));
+
+        // Execute
+        mockMvc.perform(post("/api/words").param("label", "test"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.code").value("INVALID_LABEL_DUPLICATE"))
+                .andExpect(jsonPath("$.instance").value("/api/words"))
+                .andExpect(jsonPath("$.timestamp").exists());
+
+        // Control
+    }
+
+    @Test
+    void post_add_word_throw_exception_when_new_word_null() throws Exception {
+        // Prepare
+        when(wordService.addWord("test")).thenThrow(new InvalidNewWordException("test", ErrorCode.INVALID_LABEL_NULL));
+
+        // Execute
+        mockMvc.perform(post("/api/words").param("label", "test"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.code").value("INVALID_LABEL_NULL"))
+                .andExpect(jsonPath("$.instance").value("/api/words"))
+                .andExpect(jsonPath("$.timestamp").exists());
 
         // Control
     }

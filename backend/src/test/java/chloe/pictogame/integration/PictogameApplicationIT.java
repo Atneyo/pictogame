@@ -1,13 +1,14 @@
 package chloe.pictogame.integration;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import chloe.pictogame.common.WordConstants;
@@ -41,5 +42,13 @@ class PictogameApplicationIT extends MySqlIntegrationTest {
         mockMvc.perform(get("/api/words").param("count", String.valueOf(WordConstants.MAX_COUNT + 1)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("INVALID_WORD_COUNT"));
+    }
+
+    @Test
+    void addWord_return_new_word() throws Exception {
+        mockMvc.perform(post("/api/words").param("label", "test"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("label").value("test"));
     }
 }

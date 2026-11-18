@@ -2,11 +2,15 @@ package chloe.pictogame.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import chloe.pictogame.exception.ApiException;
+import chloe.pictogame.exception.InvalidNewWordException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,6 +18,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 
 import chloe.pictogame.service.WordService;
@@ -87,5 +92,44 @@ class WordServiceTest {
         // Control
         // An invalid request must never reach the database
         verifyNoInteractions(wordRepository);
+    }
+
+    @Test
+    void addWord_success() {
+        // Prepare
+        Word word = new Word("test");
+        when(wordRepository.save(any())).thenReturn(word);
+
+        // Execute
+        WordResponse wordResponse = wordService.addWord("test");
+
+        // Control
+        assertThat(wordResponse.label()).isEqualTo("test");
+
+    }
+
+    @Test
+    void addWord_error_duplicate() {
+        // Prepare
+        when(wordRepository.save(any())).thenThrow(new DataIntegrityViolationException("Duplicate"));
+
+        // Execute
+        ApiException exception = assertThrows(InvalidNewWordException.class, () -> wordService.addWord("test"));
+
+        // Control
+        assertEquals(ErrorCode.INVALID_LABEL_DUPLICATE, exception.getErrorCode());
+        assertEquals("this word already exist (received: test)", exception.getMessage());
+    }
+
+    @Test
+    void addWord_error_word_null() {
+        // Prepare
+
+        // Execute
+        ApiException exception = assertThrows(InvalidNewWordException.class, () -> wordService.addWord(""));
+
+        // Control
+        assertEquals(ErrorCode.INVALID_LABEL_NULL, exception.getErrorCode());
+        assertEquals("new word can't be null (received: )", exception.getMessage());
     }
 }
