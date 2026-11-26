@@ -19,8 +19,8 @@ public class ApiController {
 
     // ========================= WORDS =========================
 
-    @GetMapping("/words")
-    public List<WordResponse> getWords(@RequestParam(defaultValue = "" + WordConstants.DEFAULT_COUNT) int count) {
+    @GetMapping("/words/random")
+    public List<WordResponse> getRandomWords(@RequestParam(defaultValue = "" + WordConstants.DEFAULT_COUNT) int count) {
         return wordService.getRandomWords(count);
     }
 

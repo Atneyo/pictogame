@@ -29,13 +29,13 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
  * Fetches `count` random words (the backend uses its default when omitted).
  * Pass an AbortSignal to cancel the request, e.g. when a component unmounts.
  */
-export function getWords(count?: number, signal?: AbortSignal): Promise<Word[]> {
+export function getRandomWords(count?: number, signal?: AbortSignal): Promise<Word[]> {
   const params = new URLSearchParams();
   if (count !== undefined) {
     params.set("count", String(count));
   }
   const query = params.size > 0 ? `?${params}` : "";
-  return request<Word[]>(`/words${query}`, { signal });
+  return request<Word[]>(`/words/random${query}`, { signal });
 }
 
 export function addWord(label: string): Promise<Word> {

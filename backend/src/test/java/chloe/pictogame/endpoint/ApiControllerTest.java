@@ -38,13 +38,13 @@ class  ApiControllerTest {
     private WordService wordService;
 
     @Test
-    void getWords_returnsWordsAsJson() throws Exception {
+    void getRandomWords_returnsWordsAsJson() throws Exception {
         // Prepare
         when(wordService.getRandomWords(2))
                 .thenReturn(List.of(new WordResponse(1L, "chat"), new WordResponse(2L, "chien")));
 
         // Execute
-        mockMvc.perform(get("/api/words").param("count", "2"))
+        mockMvc.perform(get("/api/words/random").param("count", "2"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(2))
@@ -55,12 +55,12 @@ class  ApiControllerTest {
     }
 
     @Test
-    void getWords_withoutCount_usesDefaultCount() throws Exception {
+    void getRandomWords_withoutCount_usesDefaultCount() throws Exception {
         // Prepare
         when(wordService.getRandomWords(WordConstants.DEFAULT_COUNT)).thenReturn(List.of());
 
         // Execute
-        mockMvc.perform(get("/api/words"))
+        mockMvc.perform(get("/api/words/random"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isEmpty());
 
@@ -69,29 +69,29 @@ class  ApiControllerTest {
     }
 
     @Test
-    void getWords_invalidCount_returns400WithErrorCode() throws Exception {
+    void getRandomWords_invalidCount_returns400WithErrorCode() throws Exception {
         // Prepare
         when(wordService.getRandomWords(0))
                 .thenThrow(new InvalidWordCountException(0, WordConstants.MIN_COUNT, WordConstants.MAX_COUNT));
 
         // Execute
-        mockMvc.perform(get("/api/words").param("count", "0"))
+        mockMvc.perform(get("/api/words/random").param("count", "0"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.code").value("INVALID_WORD_COUNT"))
-                .andExpect(jsonPath("$.instance").value("/api/words"))
+                .andExpect(jsonPath("$.instance").value("/api/words/random"))
                 .andExpect(jsonPath("$.timestamp").exists());
 
         // Control
     }
 
     @Test
-    void getWords_nonNumericCount_returns400WithoutCallingService() throws Exception {
+    void getRandomWords_nonNumericCount_returns400WithoutCallingService() throws Exception {
         // Prepare
 
         // Execute
-        mockMvc.perform(get("/api/words").param("count", "abc"))
+        mockMvc.perform(get("/api/words/random").param("count", "abc"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("INVALID_PARAMETER"));
 
@@ -128,7 +128,7 @@ class  ApiControllerTest {
         when(wordService.getRandomWords(3)).thenThrow(new CannotCreateTransactionException("jdbc secret-host:3306"));
 
         // Execute
-        mockMvc.perform(get("/api/words").param("count", "3"))
+        mockMvc.perform(get("/api/words/random").param("count", "3"))
                 .andExpect(status().isServiceUnavailable())
                 .andExpect(jsonPath("$.code").value("DATABASE_UNAVAILABLE"))
                 .andExpect(jsonPath("$.detail").value(not(containsString("secret-host"))));
@@ -142,7 +142,7 @@ class  ApiControllerTest {
         when(wordService.getRandomWords(3)).thenThrow(new IllegalStateException("internal secret detail"));
 
         // Execute
-        mockMvc.perform(get("/api/words").param("count", "3"))
+        mockMvc.perform(get("/api/words/random").param("count", "3"))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.code").value("INTERNAL_ERROR"))
                 .andExpect(jsonPath("$.detail").value(not(containsString("internal secret detail"))));

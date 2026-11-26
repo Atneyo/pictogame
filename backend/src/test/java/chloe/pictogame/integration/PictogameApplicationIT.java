@@ -23,7 +23,7 @@ class PictogameApplicationIT extends MySqlIntegrationTest {
 
     @Test
     void getWords_returnsRequestedNumberOfWords() throws Exception {
-        mockMvc.perform(get("/api/words").param("count", "5"))
+        mockMvc.perform(get("/api/words/random").param("count", "5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(5))
                 .andExpect(jsonPath("$[0].id").isNumber())
@@ -32,14 +32,14 @@ class PictogameApplicationIT extends MySqlIntegrationTest {
 
     @Test
     void getWords_withoutCount_returnsDefaultNumberOfWords() throws Exception {
-        mockMvc.perform(get("/api/words"))
+        mockMvc.perform(get("/api/words/random"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(WordConstants.DEFAULT_COUNT));
     }
 
     @Test
     void getWords_withCountAboveMaximum_returns400() throws Exception {
-        mockMvc.perform(get("/api/words").param("count", String.valueOf(WordConstants.MAX_COUNT + 1)))
+        mockMvc.perform(get("/api/words/random").param("count", String.valueOf(WordConstants.MAX_COUNT + 1)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("INVALID_WORD_COUNT"));
     }

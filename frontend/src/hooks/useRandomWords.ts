@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getWords } from "../services/api.ts";
+import { getRandomWords } from "../services/api.ts";
 import { getErrorMessage } from "../services/errorMessages.ts";
 import type { Word } from "../types/word.ts";
 
@@ -18,7 +18,7 @@ export function useRandomWords() {
     setIsLoading(true);
     setError(null);
     try {
-      setWords(await getWords(count, controller.signal));
+      setWords(await getRandomWords(count, controller.signal));
     } catch (e) {
       // A cancelled request is expected, not an error to display
       if (e instanceof DOMException && e.name === "AbortError") return;
