@@ -1,6 +1,7 @@
 package chloe.pictogame.endpoint;
 
 import chloe.pictogame.common.WordConstants;
+import chloe.pictogame.dto.WordPageResponse;
 import chloe.pictogame.dto.WordResponse;
 import chloe.pictogame.service.WordService;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,11 @@ public class ApiController {
     @GetMapping("/words/random")
     public List<WordResponse> getRandomWords(@RequestParam(defaultValue = "" + WordConstants.DEFAULT_COUNT) int count) {
         return wordService.getRandomWords(count);
+    }
+
+    @GetMapping("/words")
+    public WordPageResponse getWords(@RequestParam(defaultValue= "" + WordConstants.DEFAULT_PAGE) int page, @RequestParam(defaultValue= "" + WordConstants.DEFAULT_PAGE_SIZE) int size) {
+        return wordService.getWords(page, size);
     }
 
     @PostMapping("/words")

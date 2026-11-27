@@ -12,8 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
-import chloe.pictogame.exception.ErrorCode;
-import chloe.pictogame.exception.InvalidNewWordException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -23,9 +21,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.CannotCreateTransactionException;
 
 import chloe.pictogame.common.WordConstants;
+import chloe.pictogame.dto.WordPageResponse;
 import chloe.pictogame.dto.WordResponse;
 import chloe.pictogame.exception.InvalidWordCountException;
 import chloe.pictogame.service.WordService;
+import chloe.pictogame.exception.ErrorCode;
+import chloe.pictogame.exception.InvalidNewWordException;
+import chloe.pictogame.exception.InvalidPaginationException;
 
 // Loads only the web layer (controller + GlobalExceptionHandler), the service is a mock
 @WebMvcTest(ApiController.class)
@@ -92,6 +94,73 @@ class  ApiControllerTest {
 
         // Execute
         mockMvc.perform(get("/api/words/random").param("count", "abc"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("INVALID_PARAMETER"));
+
+        // Control
+        verifyNoInteractions(wordService);
+    }
+
+    @Test
+    void getWords_returnsRequestedPageAsJson() throws Exception {
+        // Prepare
+        when(wordService.getWords(2, 5))
+                .thenReturn(new WordPageResponse(4, 2, List.of(new WordResponse(11L, "chat"))));
+
+        // Execute
+        mockMvc.perform(get("/api/words").param("page", "2").param("size", "5"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.nbOfPages").value(4))
+                .andExpect(jsonPath("$.pageNb").value(2))
+                .andExpect(jsonPath("$.words.length()").value(1))
+                .andExpect(jsonPath("$.words[0].id").value(11))
+                .andExpect(jsonPath("$.words[0].label").value("chat"));
+
+        // Control
+        verify(wordService).getWords(2, 5);
+    }
+
+    @Test
+    void getWords_withoutPaginationParameters_usesDefaults() throws Exception {
+        // Prepare
+        when(wordService.getWords(WordConstants.DEFAULT_PAGE, WordConstants.DEFAULT_PAGE_SIZE))
+                .thenReturn(new WordPageResponse(0, WordConstants.DEFAULT_PAGE, List.of()));
+
+        // Execute
+        mockMvc.perform(get("/api/words"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nbOfPages").value(0))
+                .andExpect(jsonPath("$.pageNb").value(WordConstants.DEFAULT_PAGE))
+                .andExpect(jsonPath("$.words").isEmpty());
+
+        // Control
+        verify(wordService).getWords(WordConstants.DEFAULT_PAGE, WordConstants.DEFAULT_PAGE_SIZE);
+    }
+
+    @Test
+    void getWords_invalidPagination_returns400() throws Exception {
+        // Prepare
+        when(wordService.getWords(-1, 5))
+                .thenThrow(new InvalidPaginationException("page number must be positive (received: -1)"));
+
+        // Execute
+        mockMvc.perform(get("/api/words").param("page", "-1").param("size", "5"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.code").value("INVALID_PARAMETER"))
+                .andExpect(jsonPath("$.instance").value("/api/words"));
+
+        // Control
+    }
+
+    @Test
+    void getWords_nonNumericPagination_returns400WithoutCallingService() throws Exception {
+        // Prepare
+
+        // Execute
+        mockMvc.perform(get("/api/words").param("page", "abc"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("INVALID_PARAMETER"));
 

@@ -1,13 +1,19 @@
 package chloe.pictogame.service;
 
 import chloe.pictogame.common.WordConstants;
+import chloe.pictogame.dto.WordPageResponse;
 import chloe.pictogame.dto.WordResponse;
 import chloe.pictogame.exception.ErrorCode;
 import chloe.pictogame.exception.InvalidNewWordException;
+import chloe.pictogame.exception.InvalidPaginationException;
 import chloe.pictogame.exception.InvalidWordCountException;
 import chloe.pictogame.models.Word;
 import chloe.pictogame.repository.WordRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,5 +55,18 @@ public class WordService {
             }
         }
 
+    }
+
+    @Transactional(readOnly = true)
+    public WordPageResponse getWords(int pageNb, int pageSize) {
+        if (pageSize<WordConstants.MIN_PAGE_SIZE || pageSize>WordConstants.MAX_PAGE_SIZE){
+            throw new InvalidPaginationException("page size must be between %d and %d (received: %d)".formatted(WordConstants.MIN_PAGE_SIZE,WordConstants.MAX_PAGE_SIZE,pageSize));
+        }
+        if (pageNb<0) {
+            throw new InvalidPaginationException("page number must be positive (received: %d)".formatted(pageNb));
+        }
+        Pageable page = PageRequest.of(pageNb, pageSize, Sort.by("label"));
+        Page<Word> pageResult = wordRepository.findAll(page);
+        return WordPageResponse.from(pageResult);
     }
 }
